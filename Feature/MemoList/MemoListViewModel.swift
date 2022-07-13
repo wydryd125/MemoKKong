@@ -25,21 +25,9 @@ class MemoListViewModel: BaseViewModel {
     let bag = DisposeBag()
     
     // MARK: - Interface
-    
-    override init(title: String, sceneCoordinator: SceneCoordinatorType) {
-        super .init(title: title, sceneCoordinator: sceneCoordinator)
-        
-        self.input.makeDidTap
-            .bind { [weak self] in
-                self?.makeCreateAction()
-            }
-            .disposed(by: bag)
-        
-    }
-    
+
     private func makeCreateAction() {
-       
-        
+       print("dddd")
     }
 
     

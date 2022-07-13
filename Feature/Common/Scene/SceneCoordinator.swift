@@ -27,7 +27,8 @@ class SceneCoordinator: SceneCoordinatorType {
     
     required init(window: UIWindow) {
         self.window = window
-        currentVC = window.rootViewController!
+        currentVC = MemoListViewController()
+        //window.rootViewController!
     }
     
     @discardableResult

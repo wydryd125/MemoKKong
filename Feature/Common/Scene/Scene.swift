@@ -33,6 +33,7 @@ extension Scene {
             }
             
             return listVC
+            
         case .detail(let memoDetailViewModel):
             let listVC = MemoListViewController()
             
