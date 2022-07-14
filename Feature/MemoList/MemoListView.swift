@@ -36,7 +36,7 @@ final class MemoListView: BaseView {
         [listTableView, addButton].forEach {
             self.addSubview($0)
         }
-        self.backgroundColor = .customBlueColor
+        self.backgroundColor = .backgroundColor
         listTableView.backgroundColor = .customBlueColor
         
         addButton.backgroundColor = .customBlueColor
