@@ -9,12 +9,24 @@ import UIKit
 
 class BaseViewController: UIViewController {
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+
     }
-    */
+    
+    func setNavigation(hidden: Bool, title: String?) {
+        if hidden {
+            self.navigationController?.isNavigationBarHidden = true
+        } else {
+            self.navigationController?.isNavigationBarHidden = false
+            self.navigationController?.navigationBar.tintColor = .black
+            self.navigationController?.navigationBar.topItem?.title = ""
+        
+            self.navigationItem.title = title
+            self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12, weight: .regular)]
+          
+        }
+    }
 
 }
