@@ -19,29 +19,34 @@ final class MemoListViewController: BaseViewController, ViewModelBindableType {
     
     // MARK: - Life Cycle
     func bindViewModel() {
-        print("찍혀찍혀!!!!!!!")
-        
-    }
-    
-    override func loadView() {
-        self.view = mainView
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        loadViewIfNeeded()
-
-        self.config()
         self.bind()
     }
     
+//    override func loadView() {
+//        self.view = mainView
+//    }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        loadViewIfNeeded()
+        self.config()
+        self.setConstraint()
+    }
     
     // MARK: - Interface
     
     private func config() {
+        print("백그라운드,,,,")
+        
+        view.addSubview(mainView)
         self.view.backgroundColor = .red
+    }
+    
+    private func setConstraint() {
+        mainView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
     
     private func bind() {

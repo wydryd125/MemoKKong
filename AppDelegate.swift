@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         self.window = UIWindow(frame: UIScreen.main.bounds)
         self.window?.rootViewController = MemoListViewController()
-        self.window?.makeKeyAndVisible()
+//        self.window?.makeKeyAndVisible()
 
 //        let storage = MemoryStorage()
         let coordinator = SceneCoordinator(window: window!)

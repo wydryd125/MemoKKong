@@ -24,7 +24,7 @@ final class MemoListView: BaseView {
         self.setConstraint()
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -36,7 +36,7 @@ final class MemoListView: BaseView {
         [listTableView, addButton].forEach {
             self.addSubview($0)
         }
-        self.backgroundColor = .backgroundColor
+        self.backgroundColor = .customBlueColor
         listTableView.backgroundColor = .customBlueColor
         
         addButton.backgroundColor = .customBlueColor

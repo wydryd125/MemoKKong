@@ -27,8 +27,7 @@ class SceneCoordinator: SceneCoordinatorType {
     
     required init(window: UIWindow) {
         self.window = window
-        currentVC = MemoListViewController()
-        //window.rootViewController!
+        currentVC = window.rootViewController!
     }
     
     @discardableResult
@@ -42,9 +41,9 @@ class SceneCoordinator: SceneCoordinatorType {
             //sceneViewController가 return하는 vc를 currentVC에 저장
             currentVC = target.sceneViewController
             window.rootViewController = target
-            
+
             subject.onCompleted()
-            
+
         case .push:
             print(currentVC)
             guard let nav = currentVC.navigationController else {
