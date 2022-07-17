@@ -21,7 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 //        let storage = MemoryStorage()
         let coordinator = SceneCoordinator(window: window!)
-        let listViewModel = MemoListViewModel(title: "", sceneCoordinator: coordinator)
+        let listViewModel = MemoListViewModel()
+        //MemoListViewModel(title: "", sceneCoordinator: coordinator)
         let listVC = Scene.list(listViewModel)
         
         coordinator.transition(to: listVC, using: .root, animated: true)
