@@ -6,7 +6,27 @@
 //
 
 import Foundation
+import RxSwift
+import RxCocoa
 
-class MemoDetailViewModel {
+class MemoDetailViewModel : BaseViewModel {
+    struct Input {
+        
+    }
     
+    struct Output {
+        
+    }
+    
+    // MARK: - Property
+    
+    let input = Input()
+    let output = Output()
+    let bag = DisposeBag()
+    
+    // MARK: - Interface
+    
+    override init() {
+        super.init()
+    }
 }
