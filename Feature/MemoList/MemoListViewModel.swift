@@ -9,7 +9,7 @@ import Foundation
 import RxCocoa
 import RxSwift
 
-class MemoListViewModel: BaseViewModel {
+class MemoListViewModel {
     struct Input {
         let makeDidTap = PublishRelay<Void>()
     }

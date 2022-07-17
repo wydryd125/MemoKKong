@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import RxCocoa
+import RxSwift
 
 final class MemoDetailViewController: BaseViewController {
     
@@ -20,7 +22,7 @@ final class MemoDetailViewController: BaseViewController {
     // MARK: - Life Cycle
     
     override func loadView() {
-        self.view = mainView
+        self.view = detailView
     }
     
     override func viewDidLoad() {
