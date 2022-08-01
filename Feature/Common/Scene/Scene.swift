@@ -25,31 +25,38 @@ extension Scene {
     func instantiat() -> UIViewController {
         
         switch self {
-        case .list(let listViewModel):
+        case .list(let memoListViewModel):
             var listVC = MemoListViewController()
-            
-            DispatchQueue.main.async { //바인딩 시간을 늦춰야 네비게이션 타이틀 사이즈가 라지로 나옴
-                listVC.bind(viewModel: listViewModel)
-            }
+            listVC.bind(viewModel: memoListViewModel)
             
             return listVC
+            //물어보기
+//            let nav = UINavigationController()
+//
+//            guard var listVC = nav.viewControllers.first as? MemoListViewController else {
+//                fatalError()
+//            }
+//
+//            DispatchQueue.main.async { //바인딩 시간을 늦춰야 네비게이션 타이틀 사이즈가 라지로 나옴
+//                listVC.bind(viewModel: memoListViewModel)
+//            }
+//
+//            return nav
             
         case .detail(let memoDetailViewModel):
-            let listVC = MemoListViewController()
-            
-            DispatchQueue.main.async { //바인딩 시간을 늦춰야 네비게이션 타이틀 사이즈가 라지로 나옴
-//                listVC.bind(viewModel: memoDetailViewModel)
-            }
-            
-            return listVC
+            var detailVC = MemoDetailViewController()
+            detailVC.bind(viewModel: memoDetailViewModel)
+        
+            return detailVC
+
         case .compose(let memoComposeViewModel):
-            let listVC = MemoListViewController()
+            var composeVC = MemoCompseViewController()
             
             DispatchQueue.main.async { //바인딩 시간을 늦춰야 네비게이션 타이틀 사이즈가 라지로 나옴
-//                listVC.bind(viewModel: memoComposeViewModel)
+                composeVC.bind(viewModel: memoComposeViewModel)
             }
             
-            return listVC
+            return composeVC
         }
     }
 }

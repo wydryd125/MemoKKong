@@ -6,19 +6,17 @@
 //
 
 import UIKit
-import RxCocoa
 import RxSwift
+import RxCocoa
 
-final class MemoDetailViewController: BaseViewController {
+final class MemoDetailViewController: BaseViewController, ViewModelBindableType {
     
     // MARK: - Property
     
-    private let detailView = MemoDetailView()
-    private let viewModel = MemoListViewModel()
+    let detailView = MemoDetailView()
     private let bag = DisposeBag()
-    
-    
-    
+
+    var viewModel: MemoDetailViewModel!
     // MARK: - Life Cycle
     
     override func loadView() {
@@ -29,24 +27,50 @@ final class MemoDetailViewController: BaseViewController {
         super.viewDidLoad()
         
         self.config()
-        self.bind()
     }
-    
-    
     
     // MARK: - Interface
-    
-    private func config() {
-        
-    }
-    
-    private func bind() {
+    func bindViewModel() {
         
         // MARK: - Input
+        self.detailView.addButton.rx.tap
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
+            .bind(to: viewModel.input.editDidTap)
+            .disposed(by: bag)
         
+        self.detailView.titleTextField.rx.text
+            .bind(to: self.viewModel.input.editTitleText)
+            .disposed(by: self.bag)
         
+        self.detailView.memoTextView.rx.text
+            .bind(to: self.viewModel.input.editMemoText)
+            .disposed(by: self.bag)
+        
+        self.detailView.privateButton.rx.tap
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
+            .scan(self.detailView.selectedPrivate) { lastState, newState in !lastState }
+            .bind(to: self.viewModel.input.selectedPrivate)
+            .disposed(by: self.bag)
+        
+        self.detailView.noticeButton.rx.tap
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
+            .scan(self.detailView.selectedNotice) { lastState, newState in !lastState }
+            .bind(to: self.viewModel.input.selectedNotice)
+            .disposed(by: self.bag)
+//
         // MARK: - Output
-        
+        self.viewModel.output.closeDetail
+            .observe(on: MainScheduler.instance)
+            .bind(onNext: { _ in
+                self.viewModel.sceneCoordinator.close(animated: true)
+            })
+            .disposed(by: bag)
     }
+    
+    private func config() {
+        self.setNavigation(hidden: false, title: nil)
+        self.view.backgroundColor = .backgroundColor
+    }
+    
 }
 

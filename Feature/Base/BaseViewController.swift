@@ -6,13 +6,15 @@
 //
 
 import UIKit
+import CoreData
 
 class BaseViewController: UIViewController {
-
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    let storage = CoreDataStorage(modelName: "MemoKKong")
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
     }
     
     func setNavigation(hidden: Bool, title: String?) {
@@ -24,9 +26,9 @@ class BaseViewController: UIViewController {
             self.navigationController?.navigationBar.topItem?.title = ""
         
             self.navigationItem.title = title
-            self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12, weight: .regular)]
+            self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16, weight: .regular)]
           
         }
     }
-
+    
 }

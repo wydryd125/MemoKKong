@@ -14,19 +14,23 @@ final class MemoDetailView: BaseView {
     // MARK: - Property
     private var backgroundView = UIView()
     var privateLabel = UILabel()
-    var titleLabel = UILabel()
+    var titleTextField = UITextField()
     var addDateLabel = UILabel()
     var memoTextView = UITextView()
     var noticeButton = UIButton()
     var privateButton = UIButton()
     var addButton = UIButton()
     
+    let bag = DisposeBag()
+    
+    var selectedNotice = false
+    var selectedPrivate = false
     
     // MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         self.setAttribute()
         self.setConstraint()
     }
@@ -38,14 +42,27 @@ final class MemoDetailView: BaseView {
     
     
     // MARK: - Interface
-    
+    func setMemoData(memo: Memo) {
+        self.privateLabel.text = memo.selectedPrivate ? "PRIVATE MEMO" : ""
+        
+        self.titleTextField.text = memo.memoTitle
+        self.memoTextView.text = memo.content
+        
+        self.addDateLabel.text = dateFormate(date: memo.insertDate)
+        
+        self.selectedNotice = memo.selectedNotice
+        self.noticeButton.setImage(UIImage(named: self.selectedNotice ? "pinWhiteFilled.png" : "pinWhite.png"), for: .normal)
+        
+        self.selectedPrivate = memo.selectedPrivate
+        self.privateButton.setImage(UIImage(named: self.selectedPrivate ? "lockWhiteFilled.png" : "lockWhite.png"), for: .normal)
+    }
     
     
     // MARK: - UI
     private func setAttribute() {
         self.addSubview(self.backgroundView)
         
-        [self.privateLabel, self.titleLabel, self.addDateLabel, self.memoTextView, self.noticeButton, self.privateButton, self.addButton].forEach {
+        [self.privateLabel, self.titleTextField, self.addDateLabel, self.memoTextView, self.noticeButton, self.privateButton, self.addButton].forEach {
             self.backgroundView.addSubview($0)
         }
         
@@ -53,27 +70,38 @@ final class MemoDetailView: BaseView {
         self.backgroundView.backgroundColor = .white
         self.backgroundView.addShadow(location: .bottom)
         
-        self.privateLabel.text = "PRIVATE MEMO"
+        self.privateLabel.text = ""
         self.privateLabel.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         self.privateLabel.textColor = .customDeepPinkColor
         
-        self.titleLabel.text = "그냥 메모야"
-        self.titleLabel.font = UIFont.systemFont(ofSize: 24, weight: .medium)
+        self.titleTextField.text = ""
+        self.titleTextField.font = UIFont.systemFont(ofSize: 24, weight: .medium)
         
-        self.addDateLabel.text = "2022.09.18 08:18"
+        self.addDateLabel.text = dateFormate(date: Date())
         self.addDateLabel.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         self.addDateLabel.textColor = .customLightGrayColor
         
         self.memoTextView.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         self.memoTextView.textColor = .customLightGrayColor
+        self.memoTextView.text = ""
         
         self.noticeButton.backgroundColor = .customYellowColor
         self.noticeButton.layer.cornerRadius = 20
-        self.noticeButton.setImage(UIImage(named: "pinWhite.png"), for: .normal)
+        self.noticeButton.rx.tap
+            .bind {
+                self.selectedNotice.toggle()
+                self.noticeButton.setImage(UIImage(named: self.selectedNotice ? "pinWhiteFilled.png" : "pinWhite.png" ), for: .normal)
+            }
+            .disposed(by: bag)
         
         self.privateButton.backgroundColor = .customDeepPinkColor
         self.privateButton.layer.cornerRadius = 20
-        self.privateButton.setImage(UIImage(named: "lockWhite.png"), for: .normal)
+        self.privateButton.rx.tap
+            .bind {
+                self.selectedPrivate.toggle()
+                self.privateButton.setImage(UIImage(named: self.selectedPrivate ? "lockWhiteFilled.png" :  "lockWhite.png"), for: .normal)
+            }
+            .disposed(by: bag)
         
         self.addButton.backgroundColor = .customBlueColor
         self.addButton.layer.cornerRadius = 30
@@ -96,14 +124,14 @@ final class MemoDetailView: BaseView {
             make.height.equalTo(16)
         }
         
-        self.titleLabel.snp.makeConstraints { make in
+        self.titleTextField.snp.makeConstraints { make in
             make.top.equalTo(privateLabel.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview().inset(20)
         }
         
         self.addDateLabel.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(4)
-            make.leading.trailing.equalTo(titleLabel).inset(8)
+            make.top.equalTo(titleTextField.snp.bottom).offset(4)
+            make.leading.trailing.equalTo(titleTextField)
         }
         
         self.noticeButton.snp.makeConstraints { make in
@@ -128,5 +156,14 @@ final class MemoDetailView: BaseView {
             make.bottom.equalTo(self.addButton.snp.top).inset(-16)
         }
         
+    }
+    
+    func dateFormate(date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ko_kr")
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .medium
+        
+        return formatter.string(from: date)
     }
 }

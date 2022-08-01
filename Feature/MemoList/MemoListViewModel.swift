@@ -8,27 +8,91 @@
 import Foundation
 import RxCocoa
 import RxSwift
+import Action
+import RxDataSources
+import CoreData
 
-class MemoListViewModel {
+//typealias MemoSelectionModel = [Memo]?
+
+//AnimatableSectionModel<Int, Memo>
+
+class MemoListViewModel: BaseViewModel {
     struct Input {
+        let getMemoListData = PublishRelay<Void>()
         let makeDidTap = PublishRelay<Void>()
+        let notictDidTap = PublishRelay<Void>()
     }
     
     struct Output {
-        
+        let showMemoList = PublishRelay<Void>()
+        let goToCompose = PublishRelay<Void>()
+        let goToDetail = PublishRelay<Void>()
     }
     
     // MARK: - Property
     
     let input = Input()
     let output = Output()
-    let bag = DisposeBag()
+    private let bag = DisposeBag()
+    
+    var noticeMemoList: [Memo]?
+    var memoList: [Memo]?
+    
+    var memo = BehaviorRelay<[Memo]>(value: [])
+    
     
     // MARK: - Interface
-
-    private func makeCreateAction() {
-       print("dddd")
-    }
-
     
+    override init(title: String, sceneCoordinator: SceneCoordinatorType, storage: MemoStorageType) {
+        super.init(title: title, sceneCoordinator: sceneCoordinator, storage: storage)
+        
+        self.input.getMemoListData
+            .bind { [weak self] in
+                self?.getMemoList()
+            }
+            .disposed(by: bag)
+        
+        self.input.makeDidTap
+            .bind { [weak self] in
+                self?.output.goToCompose.accept(())
+                
+            }
+            .disposed(by: self.bag)
+        
+        self.input.notictDidTap
+            .bind { [weak self] in
+                self?.output.goToDetail.accept(())
+            }
+            .disposed(by: self.bag)
+    }
+    
+    //물어보기
+    func getMemoList() {
+        storage.memoList()
+            .bind(onNext: { list in
+                self.memoList = list
+                self.noticeMemoList = self.getNoticeMemoList(memo: list)
+                self.output.showMemoList.accept(())
+            })
+            .disposed(by: bag)
+    }
+    
+    func getNoticeMemoList(memo: [Memo]) -> [Memo]? {
+        let list = memo.filter { $0.selectedNotice == true }
+        return list
+//        let memo = storage.memoList()
+//
+//        memo.asObservable()
+//            .map {
+//                $0.filter { memo in
+//                    memo.selectedPrivate == true
+//                }
+//            }
+//            .toArray()
+//            .subscribe({
+//                print($0)
+//            })
+//            .disposed(by: bag)
+//
+    }
 }

@@ -16,13 +16,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         self.window = UIWindow(frame: UIScreen.main.bounds)
-        self.window?.rootViewController = MemoListViewController()
-        self.window?.makeKeyAndVisible()
+        self.window?.rootViewController = UINavigationController(rootViewController: MemoListViewController())
+//        self.window?.makeKeyAndVisible()
 
-//        let storage = MemoryStorage()
+        let storage = CoreDataStorage(modelName: "MemoKKong")
         let coordinator = SceneCoordinator(window: window!)
-        let listViewModel = MemoListViewModel()
-        //MemoListViewModel(title: "", sceneCoordinator: coordinator)
+        let listViewModel = MemoListViewModel(title: "", sceneCoordinator: coordinator, storage: storage)
         let listVC = Scene.list(listViewModel)
         
         coordinator.transition(to: listVC, using: .root, animated: true)

@@ -28,6 +28,8 @@ class SceneCoordinator: SceneCoordinatorType {
     required init(window: UIWindow) {
         self.window = window
         currentVC = window.rootViewController!
+        
+        self.window.makeKeyAndVisible()
     }
     
     @discardableResult
@@ -41,11 +43,10 @@ class SceneCoordinator: SceneCoordinatorType {
             //sceneViewController가 return하는 vc를 currentVC에 저장
             currentVC = target.sceneViewController
             window.rootViewController = target
-
+            
             subject.onCompleted()
-
+            
         case .push:
-            print(currentVC)
             guard let nav = currentVC.navigationController else {
                 subject.onError(TransitionError.navigationControllerMissing)
                 break
@@ -63,6 +64,7 @@ class SceneCoordinator: SceneCoordinatorType {
             subject.onCompleted()
             
         case .modal:
+            target.modalPresentationStyle = .overFullScreen
             currentVC.present(target, animated: animated) {
                 subject.onCompleted()
             }
@@ -77,7 +79,7 @@ class SceneCoordinator: SceneCoordinatorType {
     
     // transition는 asCompletable를 사용하여 Completable로 변환
     // close는 Completable를 직접 구현
-    @discardableResult
+    //    @discardableResult
     func close(animated: Bool) -> Completable {
         return Completable.create { [unowned self] completable in
             if let presentingVC = self.currentVC.presentingViewController {
@@ -99,7 +101,6 @@ class SceneCoordinator: SceneCoordinatorType {
             }
             
             return Disposables.create()
-            
         }
     }
 }

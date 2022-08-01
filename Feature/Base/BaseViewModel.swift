@@ -20,14 +20,12 @@ class BaseViewModel: NSObject {
     // 모든 scene가 navigation에 embad되기 떄문에 navigation title이 필요
     // Driver를 사용하면 naviagtion item에 쉽게 binding 할 수 있다.
   let title: Driver<String>
-  
   let sceneCoordinator: SceneCoordinatorType
-//  let storage: MemoStorageType
+  let storage: MemoStorageType
   
-    init(title: String, sceneCoordinator: SceneCoordinatorType) {//, storage: MemoStorageType) {
+    init(title: String, sceneCoordinator: SceneCoordinatorType, storage: MemoStorageType) {
     self.title = Observable.just(title).asDriver(onErrorJustReturn: "")
     self.sceneCoordinator = sceneCoordinator
-//    self.storage = storage
+    self.storage = storage
   }
 }
-

@@ -43,6 +43,7 @@ final class MemoComposeView: BaseView {
     
     
     
+    
     // MARK: - UI
     private func setAttribute() {
         self.addSubview(self.backgroundView)
@@ -80,7 +81,7 @@ final class MemoComposeView: BaseView {
         self.privateButton.rx.tap
             .bind {
                 self.selectedPrivate.toggle()
-                self.privateButton.setImage(UIImage(named: self.selectedPrivate ? "lockWhiteFilled.png" : "lockWhite.png"), for: .normal)
+                self.privateButton.setImage(UIImage(named: self.selectedPrivate ? "lockWhiteFilled.png" :  "lockWhite.png"), for: .normal)
             }
             .disposed(by: bag)
         
@@ -96,7 +97,7 @@ final class MemoComposeView: BaseView {
         self.backgroundView.snp.makeConstraints { make in
             make.width.equalToSuperview().multipliedBy(0.9)
             make.height.equalTo(guide.snp.height).multipliedBy(0.88)
-            make.centerX.centerY.equalTo(guide)
+            make.center.equalTo(guide)
             
         }
         
