@@ -17,7 +17,7 @@ struct Memo: Equatable, IdentifiableType {
     var selectedNotice: Bool
     var selectedPrivate: Bool
     var identity: String
-    
+ 
     init(memoTitle: String, content: String, insertData: Date = Date(), selectedNotice: Bool, selectedPrivate: Bool) {
         self.memoTitle = memoTitle
         self.content = content
@@ -45,6 +45,7 @@ extension Memo: Persistable {
     static var primaryAttributeName: String {
         return "identity"
     }
+
     
     init(entity: NSManagedObject) {
         memoTitle = entity.value(forKey: "title") as! String

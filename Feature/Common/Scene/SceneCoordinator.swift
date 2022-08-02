@@ -21,6 +21,7 @@ extension UIViewController {
 }
 
 class SceneCoordinator: SceneCoordinatorType {
+
     private let bag = DisposeBag()
     private var window: UIWindow
     private var currentVC: UIViewController
@@ -42,7 +43,7 @@ class SceneCoordinator: SceneCoordinatorType {
         case .root:
             //sceneViewController가 return하는 vc를 currentVC에 저장
             currentVC = target.sceneViewController
-            window.rootViewController = target
+            window.rootViewController = UINavigationController(rootViewController: currentVC)
             
             subject.onCompleted()
             

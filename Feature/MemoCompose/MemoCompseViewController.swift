@@ -68,7 +68,8 @@ final class MemoCompseViewController: BaseViewController, ViewModelBindableType 
         self.viewModel.output.closeCompose
             .observe(on: MainScheduler.instance)
             .bind(onNext: { _ in
-                self.viewModel.sceneCoordinator.close(animated: true)
+                self.navigationController?.popViewController(animated: true)
+//                self.viewModel.sceneCoordinator.close(animated: true)
             })
             .disposed(by: bag)
     }

@@ -11,6 +11,7 @@ import RxCocoa
 
 class MemoDetailViewModel : BaseViewModel {
     struct Input {
+        let getMemoData = PublishRelay<Void>()
         let editDidTap = PublishRelay<Void>()
         let editTitleText = BehaviorRelay<String?>(value: nil)
         let editMemoText = BehaviorRelay<String?>(value: nil)
@@ -19,6 +20,7 @@ class MemoDetailViewModel : BaseViewModel {
     }
     
     struct Output {
+        let setMemoData = BehaviorRelay<Memo?>(value: nil)
         let closeDetail = PublishRelay<Void>()
 //        let editMemo = BehaviorRelay<Memo>(value: Memo()
         
@@ -35,6 +37,19 @@ class MemoDetailViewModel : BaseViewModel {
     
     override init(title: String, sceneCoordinator: SceneCoordinatorType, storage: MemoStorageType) {
         super.init(title: title, sceneCoordinator: sceneCoordinator, storage: storage)
+        
+        self.input.getMemoData
+            .map { [weak self] _ -> Memo in
+                guard let memo = self?.memo else { return Memo(memoTitle: "", content: "", selectedNotice: false, selectedPrivate: false) }
+                
+                return memo
+            }
+            .bind(onNext: { memo in
+                print(memo)
+                self.output.setMemoData.accept(memo)
+            })
+            .disposed(by: bag)
+        
         
         self.input.editDidTap
             .map { [weak self] _ -> MemoModel? in
@@ -53,7 +68,7 @@ class MemoDetailViewModel : BaseViewModel {
             }
             .compactMap { $0 }
             .bind(onNext:{ memoModel in
-                print(memoModel)
+                
                 self.storage.update(memo: self.memo, title: memoModel.title, content: memoModel.memo, selectedNotice: memoModel.selectedNotice, selectedPrivate: memoModel.selectedPrivate)
                 self.output.closeDetail.accept(())
             })

@@ -38,7 +38,7 @@ class MemoListViewModel: BaseViewModel {
     var noticeMemoList: [Memo]?
     var memoList: [Memo]?
     
-    var memo = BehaviorRelay<[Memo]>(value: [])
+//    var memo = BehaviorRelay<[Memo]>(value: [])
     
     
     // MARK: - Interface
@@ -71,28 +71,10 @@ class MemoListViewModel: BaseViewModel {
         storage.memoList()
             .bind(onNext: { list in
                 self.memoList = list
-                self.noticeMemoList = self.getNoticeMemoList(memo: list)
+                self.noticeMemoList = list.filter { $0.selectedNotice == true }
+                //self.getNoticeMemoList(memo: list)
                 self.output.showMemoList.accept(())
             })
             .disposed(by: bag)
-    }
-    
-    func getNoticeMemoList(memo: [Memo]) -> [Memo]? {
-        let list = memo.filter { $0.selectedNotice == true }
-        return list
-//        let memo = storage.memoList()
-//
-//        memo.asObservable()
-//            .map {
-//                $0.filter { memo in
-//                    memo.selectedPrivate == true
-//                }
-//            }
-//            .toArray()
-//            .subscribe({
-//                print($0)
-//            })
-//            .disposed(by: bag)
-//
     }
 }

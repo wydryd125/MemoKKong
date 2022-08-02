@@ -33,6 +33,7 @@ final class MemoDetailViewController: BaseViewController, ViewModelBindableType 
     func bindViewModel() {
         
         // MARK: - Input
+        
         self.detailView.addButton.rx.tap
             .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
             .bind(to: viewModel.input.editDidTap)
@@ -65,12 +66,21 @@ final class MemoDetailViewController: BaseViewController, ViewModelBindableType 
                 self.viewModel.sceneCoordinator.close(animated: true)
             })
             .disposed(by: bag)
+        
+        self.viewModel.output.setMemoData
+            .observe(on: MainScheduler.instance)
+            .compactMap { $0 }
+            .bind { memo in
+                self.detailView.setMemoData(memo: memo)
+            }
+            .disposed(by: bag)
     }
     
     private func config() {
         self.setNavigation(hidden: false, title: nil)
         self.view.backgroundColor = .backgroundColor
     }
+    
     
 }
 

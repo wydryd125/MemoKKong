@@ -34,17 +34,12 @@ final class MemoListViewController: BaseViewController, ViewModelBindableType {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        self.bind()
-//        self.setTableView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-//        self.viewModel.getMemoList()
-//        self.mainView.listTableView.reloadData()
-//
-//        self.setNavigation(hidden: true, title: nil)
+    
+        self.setNavigation(hidden: true, title: nil)
     }
     
     
@@ -99,23 +94,24 @@ final class MemoListViewController: BaseViewController, ViewModelBindableType {
 
     
     private func goToCompose() {
+        self.setNavigation(hidden: false, title: "")
         let composeViewModel = MemoComposeViewModel(title: "새 메모", sceneCoordinator: self.viewModel.sceneCoordinator, storage: self.viewModel.storage)
         
         let composeScene = Scene.compose(composeViewModel)
-    
-        //push를 일단 .modal로
-        self.viewModel.sceneCoordinator.transition(to: composeScene, using: .modal, animated: true)
+
+        self.viewModel.sceneCoordinator.transition(to: composeScene, using: .push, animated: true)
     }
     
     private func gotoDetail(memo: Memo) {
+        self.setNavigation(hidden: false, title: "")
+        
         let detailViewModel = MemoDetailViewModel(title: "", sceneCoordinator: self.viewModel.sceneCoordinator, storage: self.viewModel.storage)
+        detailViewModel.memo = memo
         
         let detailScene = Scene.detail(detailViewModel)
         
-        self.viewModel.sceneCoordinator.transition(to: detailScene, using: .modal, animated: true)
-//        detailVC.viewModel.memo = memo
-//        detailVC.detailView.setMemoData(memo: memo)
-//        self.navigationController?.pushViewController(detailVC, animated: true)
+        self.viewModel.sceneCoordinator.transition(to: detailScene, using: .push, animated: true)
+
     }
 }
 
