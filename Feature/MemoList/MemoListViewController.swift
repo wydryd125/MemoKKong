@@ -102,11 +102,12 @@ final class MemoListViewController: BaseViewController, ViewModelBindableType {
         self.viewModel.sceneCoordinator.transition(to: composeScene, using: .push, animated: true)
     }
     
+    // 물어보자 MVVM-C vc 이동 간에 어떤 방식으로 데이터를 전달해야할까?
+    // 현재 메모 리스트 중 한가지의 메모를 선택하면 해당 메모를 디테일 뷰컨으로 넘겨야 하는데 방법을 모르겠음...
     private func gotoDetail(memo: Memo) {
         self.setNavigation(hidden: false, title: "")
         
         let detailViewModel = MemoDetailViewModel(title: "", sceneCoordinator: self.viewModel.sceneCoordinator, storage: self.viewModel.storage)
-        detailViewModel.memo = memo
         
         let detailScene = Scene.detail(detailViewModel)
         
@@ -246,7 +247,7 @@ extension MemoListViewController: UITableViewDataSource, UITableViewDelegate {
         case CellType.add.rawValue:
             return 40
         case CellType.notice.rawValue:
-            return 160
+            return viewModel.noticeMemoList?.isEmpty == true ?? 0 : 160
         case CellType.memo.rawValue:
             return 100
         default:

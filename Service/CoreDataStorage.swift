@@ -59,7 +59,7 @@ class CoreDataStorage: MemoStorageType {
     
     @discardableResult
     func update(memo: Memo, title: String, content: String, selectedNotice: Bool, selectedPrivate: Bool) -> Observable<Memo> {
-        // 물어보자
+        // 물어보자 2랑 똑같 
         let updated = Memo(memoTitle: title, content: content, selectedNotice: selectedNotice, selectedPrivate: selectedPrivate)
         
         do {

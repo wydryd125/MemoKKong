@@ -66,7 +66,7 @@ class MemoListViewModel: BaseViewModel {
             .disposed(by: self.bag)
     }
     
-    //물어보기
+    //물어보자
     func getMemoList() {
         storage.memoList()
             .bind(onNext: { list in
