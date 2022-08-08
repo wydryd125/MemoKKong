@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import Action
 
 final class MemoDetailViewController: BaseViewController, ViewModelBindableType {
     
@@ -63,7 +64,8 @@ final class MemoDetailViewController: BaseViewController, ViewModelBindableType 
         self.viewModel.output.closeDetail
             .observe(on: MainScheduler.instance)
             .bind(onNext: { _ in
-                self.viewModel.sceneCoordinator.close(animated: true)
+                self.navigationController?.popViewController(animated: true)
+//                self.viewModel.sceneCoordinator.close(animated: true)
             })
             .disposed(by: bag)
         
