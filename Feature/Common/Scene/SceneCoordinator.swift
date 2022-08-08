@@ -28,7 +28,7 @@ class SceneCoordinator: SceneCoordinatorType {
     
     required init(window: UIWindow) {
         self.window = window
-        currentVC = window.rootViewController!
+        currentVC = window.rootViewController ?? UIViewController()
         
         self.window.makeKeyAndVisible()
     }
@@ -64,8 +64,8 @@ class SceneCoordinator: SceneCoordinatorType {
             
             subject.onCompleted()
             
-        case .modal:
-            target.modalPresentationStyle = .overFullScreen
+        case .modal(let style):
+            target.modalPresentationStyle = style
             currentVC.present(target, animated: animated) {
                 subject.onCompleted()
             }

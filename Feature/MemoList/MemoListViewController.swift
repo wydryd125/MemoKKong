@@ -107,8 +107,8 @@ final class MemoListViewController: BaseViewController, ViewModelBindableType {
     private func gotoDetail(memo: Memo) {
         self.setNavigation(hidden: false, title: "")
         
-        let detailViewModel = MemoDetailViewModel(title: "", sceneCoordinator: self.viewModel.sceneCoordinator, storage: self.viewModel.storage)
-        
+        let detailViewModel = MemoDetailViewModel(title: "", sceneCoordinator: self.viewModel.sceneCoordinator, storage: self.viewModel.storage, memo: memo)
+//        detailViewModel.memo = memo
         let detailScene = Scene.detail(detailViewModel)
         
         self.viewModel.sceneCoordinator.transition(to: detailScene, using: .push, animated: true)
@@ -247,7 +247,7 @@ extension MemoListViewController: UITableViewDataSource, UITableViewDelegate {
         case CellType.add.rawValue:
             return 40
         case CellType.notice.rawValue:
-            return viewModel.noticeMemoList?.isEmpty == true ?? 0 : 160
+            return viewModel.noticeMemoList?.isEmpty == true ? 0 : 160
         case CellType.memo.rawValue:
             return 100
         default:

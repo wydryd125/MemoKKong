@@ -63,7 +63,7 @@ class CoreDataStorage: MemoStorageType {
         let updated = Memo(memoTitle: title, content: content, selectedNotice: selectedNotice, selectedPrivate: selectedPrivate)
         
         do {
-            _ = try mainContext.rx.delete(memo)
+//            _ = try mainContext.rx.delete(memo)
             _ = try mainContext.rx.update(updated)
             return Observable.just(updated)
         } catch {

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 /*
  VC의 전환 방식의 스타일과 error형식 선언
@@ -14,7 +15,7 @@ import Foundation
 enum TransitionStyle {
   case root
   case push
-  case modal
+  case modal(UIModalPresentationStyle)
 }
 enum TransitionError: Error {
   case navigationControllerMissing //navi가 없을 때
